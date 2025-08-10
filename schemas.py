@@ -17,6 +17,3 @@ class MessageResponse(BaseModel):
                 "message": "Сообщение получено"
             }
         }
-
-
-

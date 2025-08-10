@@ -1,7 +1,8 @@
-from pydantic_settings import  BaseSettings
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     TELEGRAM_BOT_TOKEN: str
+    TELEGRAM_USER_ID: int
 
     class Config:
         env_file = ".env"
