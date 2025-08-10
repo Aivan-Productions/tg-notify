@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from schemas import MessageRequest, MessageResponse
 import uvicorn
+from bot import send_message_to_user
+import asyncio
 
 app = FastAPI(
     title="FastAPI App",
@@ -15,12 +17,14 @@ async def root():
         "msg": "Успешно получено сообщение"
     }
 
+
 @app.get("/status")
 async def status():
     return {
         "ok": True,
         "msg": "Сервис работает"
     }
+
 
 @app.get("/echo/{message}")
 async def echo_message(message: str):
@@ -34,6 +38,11 @@ async def echo_message(message: str):
 @app.post("/send-message", response_model=MessageResponse)
 async def send_message(request: MessageRequest):
     print(f"Получено сообщение: {request.msg} для роли: {request.role}")
+
+    try:
+        asyncio.create_task(send_message_to_user(f"Новое сообщение ({request.role}): {request.msg}"))
+    except Exception as e:
+        print(f"Ошибка при отправке в Telegram: {e}")
 
     return MessageResponse(
         status="ok",
