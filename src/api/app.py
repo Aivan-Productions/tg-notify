@@ -1,7 +1,6 @@
 from fastapi import FastAPI
-from schemas import MessageRequest, MessageResponse
-import uvicorn
-from bot import send_message_to_user
+from src.schemas import MessageRequest, MessageResponse
+from src.bot.bot import send_message_to_user
 import asyncio
 
 app = FastAPI(
@@ -51,4 +50,6 @@ async def send_message(request: MessageRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
+    import uvicorn
+
+    uvicorn.run("src.api.app:app", host="127.0.0.1", port=8000, reload=True)
