@@ -1,16 +1,19 @@
-from fastapi import FastAPI
-from schemas import MessageRequest, MessageResponse
-import uvicorn
-from bot import send_message_to_user
+from fastapi import APIRouter
+from src.schemas.schemas import MessageRequest, MessageResponse
+from ..bot.bot import send_message_to_user
 import asyncio
+import sys
+import os
 
-app = FastAPI(
-    title="FastAPI App",
-    description="FastAPI application for message processing"
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+router = APIRouter(
+    prefix="",
+    tags=["main"]
 )
 
 
-@app.get("/")
+@router.get("/")
 async def root():
     return {
         "ok": True,
@@ -18,7 +21,7 @@ async def root():
     }
 
 
-@app.get("/status")
+@router.get("/status")
 async def status():
     return {
         "ok": True,
@@ -26,7 +29,7 @@ async def status():
     }
 
 
-@app.get("/echo/{message}")
+@router.get("/echo/{message}")
 async def echo_message(message: str):
     return {
         "ok": True,
@@ -35,7 +38,7 @@ async def echo_message(message: str):
     }
 
 
-@app.post("/send-message", response_model=MessageResponse)
+@router.post("/send-message", response_model=MessageResponse)
 async def send_message(request: MessageRequest):
     print(f"Получено сообщение: {request.msg} для роли: {request.role}")
 
@@ -48,7 +51,3 @@ async def send_message(request: MessageRequest):
         status="ok",
         message="Сообщение успешно получено"
     )
-
-
-if __name__ == "__main__":
-    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
