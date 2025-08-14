@@ -1,8 +1,13 @@
 import asyncio
 import logging
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
-from src.config import settings
+from ..config import settings
 
 logging.basicConfig(level=logging.INFO)
 
