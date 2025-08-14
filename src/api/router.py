@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from ..schemas import MessageRequest, MessageResponse
+from src.schemas.schemas import MessageRequest, MessageResponse
 from ..bot.bot import send_message_to_user
 import asyncio
 import sys
